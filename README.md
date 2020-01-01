@@ -43,11 +43,11 @@ Creating a new library
 
 ## Opam File
 
-`mkocaml` uses `git config user.name` and `git config user.email` to fill in details. This info is used to generate a default version control url. For example, a git user name of `Chris Nevers` generates `https://github.com/chrisnevers`.
+`git config` is used to fill in details. 
 
-The `opam` package will be versioned at `1.0` by default. For subsequent releases, update the version in `<project>.opam` and `Makefile` (under the `publish` section).
+The project will be versioned at `1.0` by default. For subsequent releases, update the version in this file and `Makefile` (under the `publish` section).
 
-Before publishing, ensure you fill in the `synopsis` section of the `<project>.opam`.
+Before publishing, ensure you fill in the `synopsis` section.
 
 # Contributions
 Contributions to `mkocaml` are greatly appreciated! ❤️
