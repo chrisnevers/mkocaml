@@ -1,16 +1,24 @@
 # 🐪 Mkocaml
 
-A simple helper I use to generate OCaml projects.
+A simple helper I use to generate OCaml projects. I constantly find myself struggling to remember `dune` commands for
+various tasks and how to setup opam files. This project is intended to solve that and make setup quicker.
 
 This tool generates:
   * Git repository
   * Git ignore
   * Executable/Library
-  * Makefile with no nonsense commands
+  * Opam package
   * Copy of the executable to `/usr/local/bin`
-
-I constantly find myself struggling to remember `dune` commands for
-various tasks. This project is intended to solve that.
+  * Makefile with no nonsense commands
+    
+ |Makefile command|Description|
+ |---|---|
+ |`make` or `make build` | Builds the project with dune, copies exe to `/usr/local/bin` |
+ |`make install` | Installs the dune projects|
+ |`make test` | Runs unit tests|
+ |`make clean` | Cleans the project with dune|
+ |`make doc` | Generates the documentation for the project|
+ | `make publish` | Publishes the opam package| 
 
 
 # Example
