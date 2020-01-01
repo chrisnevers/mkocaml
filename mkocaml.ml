@@ -47,15 +47,18 @@ publish:
   copy_exe
 
 let opam project =
+  let username = input_line (Unix.open_process_in "git config user.name") in
+  let account = String.concat "" @@ String.split_on_char ' ' @@ String.lowercase_ascii username in
+  let email = input_line (Unix.open_process_in "git config user.email") in
   Format.sprintf
 "
 opam-version: \"2.0\"
 version: \"1.0\"
-authors: \"Chris Nevers <christophernevers96@gmail.com>\"
-maintainer: \"Chris Nevers <christophernevers96@gmail.com>\"
-homepage: \"https://github.com/chrisnevers/%s\"
-bug-reports: \"https://github.com/chrisnevers/%s/issues\"
-dev-repo: \"git://github.com/chrisnevers/%s.git\"
+authors: \"%s <%s>\"
+maintainer: \"%s <%s>\"
+homepage: \"https://github.com/%s/%s\"
+bug-reports: \"https://github.com/%s/%s/issues\"
+dev-repo: \"git://github.com/%s/%s.git\"
 synopsis: \"\"
 build: [
   [\"dune\" \"subst\"] {pinned}
@@ -66,7 +69,16 @@ depends: [
   \"dune\" {build}
 ]
 "
-project project project
+(* Authors *)
+username email
+(* Maintainers *)
+username email
+(* Homepage *)
+account project
+(* Bug reports *)
+account project
+(* Dev repo *)
+account project
 
 let gitignore =
 "
