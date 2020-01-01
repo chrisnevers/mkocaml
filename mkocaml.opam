@@ -14,5 +14,5 @@ build: [
 
 depends: [
   "dune" {build}
-  "unix"
+  "Unix" {build}
 ]
