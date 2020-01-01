@@ -14,16 +14,15 @@ let specs = [
 
 let makefile project project_type =
   let copy_exe = match project_type with
-  | `Exec -> "\t@cp -f _build/default/bin/main.exe /usr/local/bin/" ^ project
+  | `Exec -> "\t@cp -f _build/default/bin/main.exe /usr/local/bin/" ^ project ^ "\n"
   | _     -> ""
   in
   Format.sprintf
 "all: build
 
-build: 
+build:
 \t@dune build @all
 %s
-
 install:
 \t@dune install
 
@@ -33,14 +32,18 @@ test: build
 doc: build
 \t@opam install odoc
 \t@dune build @doc
-  
+
 clean:
 \t@dune clean
 
+# Create a release on Github, then run git pull
 publish:
+\t@git tag 1.0
+\t@git push origin 1.0
+\t@git pull
 \t@opam pin .
 \t@opam publish .
-" 
+"
   copy_exe
 
 let opam project =
@@ -61,12 +64,11 @@ build: [
 
 depends: [
   \"dune\" {build}
-  \"alcotest\" {with-test}
 ]
 "
 project project project
 
-let gitignore = 
+let gitignore =
 "
 *.annot
 *.cmo
@@ -108,11 +110,11 @@ let setup_opam project =
     let chan = open_out (project ^ ".opam") in
     output_string chan (opam project);
     close_out chan;
-    let _ = Sys.command "dune build @install" in 
+    let _ = Sys.command "dune build @install" in
     ()
 
 let setup_exe project =
-  let _ = Format.sprintf "mkdir -p bin && cd bin && dune init exec %s" project 
+  let _ = Format.sprintf "mkdir -p bin && cd bin && dune init exec %s " project
           |> Sys.command in
   begin match Sys.file_exists "Makefile" with
   | true -> ()
@@ -124,8 +126,8 @@ let setup_exe project =
   setup_opam project
 
 let setup_lib project =
-  let _ = Format.sprintf 
-            "mkdir -p lib && cd lib && dune init lib %s && mv ../dune . && touch %s.ml" 
+  let _ = Format.sprintf
+            "mkdir -p lib && cd lib && dune init lib %s --inline-tests && touch %s.ml && mv ../dune ."
             project project
           |> Sys.command in
   begin match Sys.file_exists "Makefile" with
@@ -143,13 +145,13 @@ let setup_git () =
   output_string chan gitignore;
   close_out chan
 
-let () = 
+let () =
   Arg.parse specs bad_arg usage;
-  if String.length !lib_name > 0 then 
+  if String.length !lib_name > 0 then
     let _ = setup_git () in
     setup_lib !lib_name
-  else 
-  if String.length !exe_name > 0 then 
+  else
+  if String.length !exe_name > 0 then
     let _ = setup_git () in
     setup_exe !exe_name
   else
