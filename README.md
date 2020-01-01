@@ -37,3 +37,7 @@ Creating a new executable
     > make
     > new
     Hello, World!
+Creating a new library
+
+    > mkocaml -l new
+    > make
