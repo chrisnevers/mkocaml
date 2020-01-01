@@ -1,6 +1,10 @@
 let lib_name = ref ""
 let exe_name = ref ""
 
+let username = input_line (Unix.open_process_in "git config user.name")
+let account = String.concat "" @@ String.split_on_char ' ' @@ String.lowercase_ascii username
+let email = input_line (Unix.open_process_in "git config user.email")
+
 let bad_arg arg =
   raise @@ Arg.Bad (Format.sprintf "Unrecognized argument: %s" arg)
 
@@ -42,14 +46,11 @@ publish:
 \t@git push origin 1.0
 \t@git pull
 \t@opam pin .
-\t@opam publish .
+\t@opam publish https://github.com/%s/%s/archive/1.0.tar.gz
 "
-  copy_exe
+  copy_exe account project
 
 let opam project =
-  let username = input_line (Unix.open_process_in "git config user.name") in
-  let account = String.concat "" @@ String.split_on_char ' ' @@ String.lowercase_ascii username in
-  let email = input_line (Unix.open_process_in "git config user.email") in
   Format.sprintf
 "
 opam-version: \"2.0\"
