@@ -28,9 +28,12 @@ This tool generates:
 
 The `opam` package will be versioned at `1.0` by default. For subsequent releases, update the version in `<project>.opam` and `Makefile` (under the `publish` section).
 
+# Install
+      
+      opam install mkocaml
 
 
-# Example
+# Examples
 Creating a new executable
 
     > mkocaml -e new
