@@ -13,6 +13,6 @@ build: [
 ]
 
 depends: [
-  "dune" {build}
-  "unix"
+  "dune" {>= "1.11.0"}
+  "base-unix"
 ]
