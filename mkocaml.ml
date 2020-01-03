@@ -4,6 +4,7 @@ let exe_name = ref ""
 let username = input_line (Unix.open_process_in "git config user.name")
 let account = String.concat "" @@ String.split_on_char ' ' @@ String.lowercase_ascii username
 let email = input_line (Unix.open_process_in "git config user.email")
+let dune_version = input_line (Unix.open_process_in "dune --version")
 
 let bad_arg arg =
   raise @@ Arg.Bad (Format.sprintf "Unrecognized argument: %s" arg)
@@ -67,7 +68,7 @@ build: [
 ]
 
 depends: [
-  \"dune\" {build}
+  \"dune\" {>= \"%s\"}
 ]
 "
 (* Authors *)
@@ -80,6 +81,8 @@ account project
 account project
 (* Dev repo *)
 account project
+(* Build depends on user's dune version *)
+dune_version
 
 let gitignore =
 "
@@ -127,7 +130,7 @@ let setup_opam project =
     ()
 
 let setup_exe project =
-  let _ = Format.sprintf "mkdir -p bin && cd bin && dune init exec %s " project
+  let _ = Format.sprintf "dune init exec %s bin" project
           |> Sys.command in
   begin match Sys.file_exists "Makefile" with
   | true -> ()
@@ -140,7 +143,7 @@ let setup_exe project =
 
 let setup_lib project =
   let _ = Format.sprintf
-            "mkdir -p lib && cd lib && dune init lib %s --inline-tests && touch %s.ml && mv ../dune ."
+            "dune init lib %s lib --inline-tests && touch lib/%s.ml"
             project project
           |> Sys.command in
   begin match Sys.file_exists "Makefile" with
