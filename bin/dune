@@ -1,0 +1,3 @@
+(executable
+  (name mkocaml)
+  (libraries unix ioUtils gitUtils makefileUtils opamUtils))

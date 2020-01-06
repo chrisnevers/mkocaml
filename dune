@@ -1,3 +1,0 @@
-(executable
-  (name mkocaml)
-  (libraries unix))
