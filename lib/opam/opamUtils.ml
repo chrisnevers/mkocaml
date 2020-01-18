@@ -18,6 +18,7 @@ build: [
 ]
 
 depends: [
+  \"ocaml\"
   \"dune\" {>= \"%s\"}
 ]
 "
