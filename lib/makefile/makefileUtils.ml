@@ -1,7 +1,11 @@
 let move_exe_to_bin project = function
-  | `Exec -> Format.sprintf 
+  | `Exec -> Format.sprintf
     "\t@cp -f _build/default/bin/main.exe /usr/local/bin/%s\n" project
   | _ -> ""
+
+let update_makefile_for_exe project =
+  Format.sprintf "sed -i \"\" 's#@dune build @all#@dune build @all\\\n\t@cp -f _build/default/bin/main.exe /usr/local/bin/%s\\\n#' Makefile"
+  project |> IoUtils.cmd_
 
 let makefile project project_type account =
   let mv_cmd = move_exe_to_bin project project_type in
@@ -33,8 +37,8 @@ publish:
 \t@opam publish https://github.com/%s/%s/archive/1.0.tar.gz
 "
 (* Move executables to /usr/local/bin *)
-mv_cmd 
+mv_cmd
 (* Git account name *)
-account 
+account
 (* Git project name *)
 project

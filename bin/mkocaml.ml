@@ -19,13 +19,17 @@ let specs = [
 
 let setup_exe project =
   Format.sprintf "dune init exec %s bin" project |> cmd_;
+  begin
   if Sys.file_exists "Makefile" |> not then
-    makefile project `Exec account |> write_file "Makefile";
+    makefile project `Exec account |> write_file "Makefile"
+  else
+    update_makefile_for_exe project
+  end;
   setup_opam project
 
 let setup_lib project =
-  Format.sprintf "dune init lib %s lib --inline-tests && touch lib/%s.ml"
-    project project |> cmd_;
+  Format.sprintf "mkdir -p lib/%s/ && dune init lib %s lib/%s --inline-tests && touch lib/%s/%s.ml"
+    project project project project project |> cmd_;
   if Sys.file_exists "Makefile" |> not then
     makefile project `Lib account |> write_file "Makefile";
   setup_opam project
