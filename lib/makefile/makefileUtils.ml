@@ -1,6 +1,6 @@
 let move_exe_to_bin project = function
   | `Exec -> Format.sprintf
-    "\t@cp -f _build/default/bin/main.exe /usr/local/bin/%s\n" project
+    "\t@cp -f _build/default/bin/%s.exe /usr/local/bin/%s\n" project project
   | _ -> ""
 
 let update_makefile_for_exe project =
