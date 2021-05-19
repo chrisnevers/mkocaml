@@ -13,7 +13,7 @@ bug-reports: \"https://github.com/%s/%s/issues\"
 dev-repo: \"git://github.com/%s/%s.git\"
 synopsis: \"\"
 build: [
-  [\"dune\" \"subst\"] {pinned}
+  [\"dune\" \"subst\"] {dev}
   [\"dune\" \"build\" \"-p\" name \"-j\" jobs]
 ]
 
